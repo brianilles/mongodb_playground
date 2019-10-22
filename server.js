@@ -6,7 +6,7 @@ mongoose.connect("mongodb://localhost/project_manager", {
   useUnifiedTopology: true
 });
 
-const projectRouter = require("../projects-router.js");
+const projectRouter = require("./projects-router.js");
 
 const server = express();
 server.use(express.json());

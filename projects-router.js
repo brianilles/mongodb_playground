@@ -6,9 +6,23 @@ const Project = require("./models.js");
 router.get("/", (req, res) => {
   Project.find((err, projects) => {
     if (err) {
+      console.error(err);
       res.status(500).end();
     } else {
       res.status(200).json(projects);
+    }
+  });
+});
+
+// gets a project by id
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
+  Project.find({ _id: id }, (err, project) => {
+    if (err) {
+      console.error(err);
+      res.status(500).end();
+    } else {
+      res.status(200).json(project[0]);
     }
   });
 });
@@ -17,7 +31,7 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const { name, tasks, members } = req.body;
   if (!name) {
-    res.status(422).json("Name required.");
+    res.status(422).json({ message: "Name required." });
   } else {
     const p = new Project({
       name,
@@ -29,7 +43,7 @@ router.post("/", (req, res) => {
         console.error(error);
         res.status(500).end();
       } else {
-        res.status(200).json(p);
+        res.status(201).json(p);
       }
     });
   }
